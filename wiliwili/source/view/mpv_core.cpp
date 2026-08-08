@@ -356,7 +356,16 @@ void MPVCore::init() {
     // hardware decoding
     if (HARDWARE_DEC) {
         mpvSetOptionString(mpv, "hwdec", PLAYER_HWDEC_METHOD.c_str());
-        brls::Logger::info("MPV hardware decode: {}", PLAYER_HWDEC_METHOD);
+        
+        // 核心安全保护：限定只对 h264, hevc 等硬解，强行剔除 vp9 / av1！
+        // 彻底防止 B站 VP9/WebM 视频调起 rkvdec 硬件驱动导致 RK3588 内核死锁挂起
+        mpvSetOptionString(mpv, "hwdec-codecs", "h264,hevc,vc1,mpeg2video");
+        
+        // 帧同步与降载优化：解决 Wayland 桌面下高码率 4K 丢帧问题
+        mpvSetOptionString(mpv, "video-sync", "audio");
+        mpvSetOptionString(mpv, "framedrop", "vo");
+
+        brls::Logger::info("MPV hardware decode: {}, hwdec-codecs: h264,hevc,vc1,mpeg2video", PLAYER_HWDEC_METHOD);
     } else {
         mpvSetOptionString(mpv, "hwdec", "no");
     }
