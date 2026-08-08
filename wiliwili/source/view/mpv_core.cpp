@@ -384,6 +384,12 @@ void MPVCore::init() {
 
     // Fix vo_wait_frame() cannot be wakeup
     mpvSetOptionString(mpv, "video-latency-hacks", "yes");
+#elif defined(__linux__)
+    // 禁用 Direct Rendering，防止 VPU 到 GPU 传输 4K 图像时出现颜色/步长对齐花屏
+    mpvSetOptionString(mpv, "vd-lavc-dr", "no");
+    // 优先走 GLES 与 GLES3，避免 Desktop GL 模拟 API 抛出 INVALID_ENUM
+    mpvSetOptionString(mpv, "opengl-es", "yes");
+
 #endif
     // 过低的值可能导致部分直播流无法正确播放
     mpvSetOptionString(mpv, "demuxer-lavf-analyzeduration", "0.4");
