@@ -371,7 +371,7 @@ public:
 #elif defined(PS4)
     inline static std::string PLAYER_HWDEC_METHOD = "no";
 #else
-    inline static std::string PLAYER_HWDEC_METHOD = "v4l2request-copy";
+    inline static std::string PLAYER_HWDEC_METHOD = "v4l2request";
 #endif
 
     // 此变量为真时，加载结束后自动播放视频
