@@ -371,10 +371,10 @@ void MPVCore::init() {
 
         // 4. Wayland 画面平滑度与帧同步优化
         // 改用 desync 彻底解除 Wayland 垂直同步锁，消灭 60fps 高帧率视频的周期性微抖动
-        mpvSetOptionString(mpv, "video-sync", "desync");
+        mpvSetOptionString(mpv, "video-sync", "audio");
         mpvSetOptionString(mpv, "framedrop", "vo");
 
-        brls::Logger::info("MPV hardware decode: {}, codecs: h264,hevc,av1,vc1,mpeg2video (extra-frames: 16, video-sync: desync)",
+        brls::Logger::info("MPV hardware decode: {}, codecs: h264,hevc,av1,vc1,mpeg2video (extra-frames: 16, video-sync: audio)",
                            PLAYER_HWDEC_METHOD);
     } else {
         mpvSetOptionString(mpv, "hwdec", "no");
